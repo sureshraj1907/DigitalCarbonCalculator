@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Carbon Footprint Result</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+    <style>
+        /* Fallback styles */
+        body { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white; font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 1200px; margin: 40px auto; background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; }
+        .card { background: rgba(255,255,255,0.08); padding: 30px; margin: 20px 0; border-radius: 15px; }
+        h1, h2 { color: #00c6ff; }
+        canvas { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; }
+        a { background: #00c6ff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 25px; display: inline-block; margin-top: 20px; }
+        nav { background: rgba(0,0,0,0.8); padding: 15px; text-align: center; }
+        nav a { color: #ffffff; text-decoration: none; margin: 0 20px; padding: 8px 16px; border-radius: 20px; }
+        nav a:hover { background: rgba(0,198,255,0.1); }
+    </style>
+</head>
+
+<body class="result-page">
+
+<nav class="nav-container">
+    <a href="/">Home</a>
+    <a href="/index">Calculator</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/login">Login</a>
+</nav>
+
+<div class="container">
+
+    <h1>Monthly Digital Carbon Footprint</h1>
+
+    <div class="card">
+        <h2>Total Carbon Emission: {{ total }} kg</h2>
+        <h2>Eco Score: <span id="ecoScore"></span> / 100</h2>
+    </div>
+
+    <div class="card">
+        <h2>Emission Breakdown</h2>
+        <canvas id="carbonChart"></canvas>
+    </div>
+
+    <div class="card">
+        <h2>AI Sustainability Suggestion</h2>
+        <p id="aiSuggestion"></p>
+    </div>
+
+    <a href="/">Calculate Again</a>
+
+</div>
+
+<script>
+
+const total = parseFloat('{{ total }}');
+
+// ECO SCORE CALCULATION
+let ecoScore = 100 - (total / 5);
+
+if (ecoScore < 0) {
+    ecoScore = 0;
+}
+
+if (ecoScore > 100) {
+    ecoScore = 100;
+}
+
+ecoScore = Math.round(ecoScore);
+
+document.getElementById("ecoScore").innerText = ecoScore;
+
+
+// AI SUGGESTION LOGIC
+
+let suggestionText = "";
+
+if (total < 100) {
+    suggestionText = "Low 🌱 Your digital carbon footprint is under control. Maintain sustainable habits.";
+}
+else if (total >= 100 && total < 300) {
+    suggestionText = "Moderate ⚡ Try reducing car travel and screen time to lower emissions.";
+}
+else if (total >= 300 && total < 600) {
+    suggestionText = "High 🚨 Your footprint is high. Consider optimizing transportation and digital usage.";
+}
+else {
+    suggestionText = "Very High 🔴 Immediate reduction recommended. Shift to eco-friendly practices.";
+}
+
+document.getElementById("aiSuggestion").innerText = suggestionText;
+
+
+// BAR CHART
+
+const ctx = document.getElementById('carbonChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [
+            'Car',
+            'Internet',
+            'Mobile',
+            'Streaming',
+            'Gaming',
+            'Social Media',
+            'Laptop'
+        ],
+        datasets: [{
+            label: 'Monthly CO2 Emission (kg)',
+            data: [
+                parseFloat('{{ car }}'),
+                parseFloat('{{ internet }}'),
+                parseFloat('{{ mobile }}'),
+                parseFloat('{{ streaming }}'),
+                parseFloat('{{ gaming }}'),
+                parseFloat('{{ social }}'),
+                parseFloat('{{ laptop }}')
+            ],
+            backgroundColor: [
+                '#ff4d4d',
+                '#ffa500',
+                '#00c6ff',
+                '#8a2be2',
+                '#ff1493',
+                '#32cd32',
+                '#ffff00'
+            ],
+            borderRadius: 8
+        }]
+    },
+    options: {
+        responsive: true,
+        animations: {
+            y: {
+                from: 0,
+                duration: 2000
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white'
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: 'white' },
+                grid: { display: false }
+            },
+            y: {
+                ticks: { color: 'white' },
+                grid: { color: '#444' }
+            }
+        }
+    }
+});
+
+</script>
+
+</body>
+</html>

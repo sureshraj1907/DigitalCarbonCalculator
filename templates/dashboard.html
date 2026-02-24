@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+    <style>
+        /* Fallback styles */
+        body { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white; font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 800px; margin: 40px auto; background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; }
+        h1 { color: #00c6ff; }
+        .btn { background: #00c6ff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 25px; display: inline-block; margin: 10px; }
+        nav { background: rgba(0,0,0,0.8); padding: 15px; text-align: center; }
+        nav a { color: #00c6ff; text-decoration: none; margin: 0 20px; padding: 8px 16px; border-radius: 20px; }
+        nav a:hover { background: rgba(0,198,255,0.1); }
+    </style>
+</head> 
+<body class="dashboard-page">
+<nav class="nav-container">
+    <a href="/">Home</a>
+    <a href="/index">Calculator</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/login">Login</a>
+</nav>
+<div class="container">
+
+    <h1>Dashboard</h1>
+
+    <p>Welcome to your carbon footprint dashboard.</p>
+
+    <p>Track your environmental impact and get personalized tips.</p>
+
+    <a href="/index" class="btn">Calculate Your Footprint</a>
+
+    <br>
+    <a href="/">Go Back</a>
+
+</div>
+</body>
